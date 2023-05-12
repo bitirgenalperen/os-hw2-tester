@@ -238,7 +238,7 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    testCaseCount = 16
+    testCaseCount = 20
     testRepeat = 10
     for i in range(1,testCaseCount+1):
         # Open the file for reading
