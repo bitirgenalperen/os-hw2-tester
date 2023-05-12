@@ -1,1 +1,5 @@
-- put hw2 executable in this directory and run by "python3 tester.py"
+- put hw2 executable in this directory
+    - default run by "python3 tester.py"
+    - you can also run by "python3 tester.py testCaseCount testRepeat"
+        - testCaseCount :: indicate which testcases to run -- from 1 to testCaseCount --
+        - testRepeat :: indicate how many times to run each testcase  

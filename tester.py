@@ -1,4 +1,5 @@
 import subprocess
+import sys
 
 grade = 0
 
@@ -162,8 +163,6 @@ def assertOutput(outputLines):
 
 # check thread count :: thread order :: threadTime from user's output
 def threadCheck(output):
-    # print(f"J: {len(j_check)},{len(j_check[0])}")
-    # print(f"L: {len(l_check)},{len(l_check[0])}")
     global cur_t, cur_firstTime, cur_lastTime, lastTime, firstTime
     global flag_thread_order , flag_thread_count, flag_time_limit, flag_unmatch_result
     global m, n, k
@@ -272,8 +271,13 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    testCaseCount = 5
-    testRepeat = 2
+    testCaseCount = 20
+    testRepeat = 5
+    if(len(sys.argv) > 1):
+        args = sys.argv[1:]
+        testCaseCount = int(args[0])
+        testRepeat = int(args[1])     
+
     for i in range(1,testCaseCount+1):
         # Open the file for reading
         with open(f"inputs/input{i}.txt", 'r') as file:
