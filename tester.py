@@ -76,12 +76,9 @@ def clearCache():
     cur_result = []
 
     cur_r_check = []
-    r_check = []
     for i in range(n):
-        r_check.append([])
         cur_r_check.append([])
         for j in range(k):
-            r_check[i].append(0)
             cur_r_check[i].append(0)
 
     j_check = []
@@ -199,11 +196,6 @@ def threadCheck(output):
         flag_thread_count = True
         flag_count[0] += 1
     
-    # Matrix2(5,1) i kontrol edelim ve bu t1 de basılsın
-    # Matrix0(5,*) pattterninr uyan en geç log t2 olsun
-    # Matrix1(*,1) patternine uyan en geç log t3 olsun
-    # Test etmeniz gereken değer t1-max(t2,t3)
-
     for ii in range(n):
         for j in range(k):
             t0 = 0
@@ -280,8 +272,8 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    testCaseCount = 3
-    testRepeat = 1
+    testCaseCount = 5
+    testRepeat = 2
     for i in range(1,testCaseCount+1):
         # Open the file for reading
         with open(f"inputs/input{i}.txt", 'r') as file:
