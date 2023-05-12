@@ -1,5 +1,7 @@
 import subprocess
 
+grade = 0
+
 # input matrices
 a = []
 b = []
@@ -193,6 +195,7 @@ def threadCheck(output):
 
 def printTester(testIdx, rep):
     flag_check = True
+    global grade
     print("*****************************************************************************")
     print(f"CASE: {testIdx} :: SIMULATED {rep} TIMES")
     if(flag_count[0] != 0):
@@ -222,8 +225,8 @@ def printTester(testIdx, rep):
         print("     POSSIBLE ERROR WITH MUTEX OR CONDITIONAL VARIABLE")
         print("_________________________________________________________________________") 
 
-    print("=============================================================================")
     if(flag_check):
+        grade += rep
         print(f"{rep}/{rep} :: CONGRATS, EVERYTHING WORKS FINE!")
     else:
         i = 0
@@ -235,8 +238,8 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    testCaseCount = 3
-    testRepeat = 5
+    testCaseCount = 10
+    testRepeat = 10
     for i in range(1,testCaseCount+1):
         # Open the file for reading
         with open(f"inputs/input{i}.txt", 'r') as file:
@@ -271,3 +274,6 @@ if __name__ == '__main__':
             clearCache()
         printTester(i, testRepeat)
         clearAll()
+    
+    elem = testCaseCount * testRepeat
+    print(f"YOUR FINAL GRADE: {grade}/{elem}")
