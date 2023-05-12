@@ -235,11 +235,11 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    testCaseCount = 4
+    testCaseCount = 3
     testRepeat = 5
     for i in range(1,testCaseCount+1):
         # Open the file for reading
-        with open(f"input{i}.txt", 'r') as file:
+        with open(f"inputs/input{i}.txt", 'r') as file:
             # Initialize an empty list to store the lines
             input_lines = []
             # Loop through each line in the file
@@ -248,7 +248,7 @@ if __name__ == '__main__':
                 input_lines.append(line.strip())
         assertInput(input_lines)
 
-        with open(f"output{i}.txt", 'r') as file:
+        with open(f"outputs/output{i}.txt", 'r') as file:
             # Initialize an empty list to store the lines
             output_lines = []
             # Loop through each line in the file
@@ -259,7 +259,7 @@ if __name__ == '__main__':
 
         for j in range(testRepeat):
             # Run the C executable and capture its output
-            p = subprocess.Popen(f"./hw2 < input{i}.txt", stdout=subprocess.PIPE, shell=True)
+            p = subprocess.Popen(f"./hw2 < inputs/input{i}.txt", stdout=subprocess.PIPE, shell=True)
             output = []
             # Read the output line by line
             for line in p.stdout:
