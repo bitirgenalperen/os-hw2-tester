@@ -203,7 +203,7 @@ def threadCheck(output):
                 t0 = max(t0, j_check[ii][tt])
                 t1 = max(t1, l_check[tt][j])
             t2 = cur_r_check[ii][j] - max(t0, t1)
-            if(t2 > 2*r_check[ii][j]):
+            if(t2 > 2*(r_check[ii][j] - firstTime)):
                 flag_time_limit = True
                 flag_count[2] += 1
             
