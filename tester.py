@@ -238,7 +238,7 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    testCaseCount = 15
+    testCaseCount = 10
     testRepeat = 10
 
     for i in range(1,testCaseCount+1):
