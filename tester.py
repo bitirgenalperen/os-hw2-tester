@@ -238,8 +238,9 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    testCaseCount = 10
+    testCaseCount = 15
     testRepeat = 10
+
     for i in range(1,testCaseCount+1):
         # Open the file for reading
         with open(f"inputs/input{i}.txt", 'r') as file:
