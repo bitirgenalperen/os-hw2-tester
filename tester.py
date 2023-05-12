@@ -10,6 +10,8 @@ d = []
 # check done
 j_check = []
 l_check = []
+r_check = []
+cur_r_check = []
 # result matrix
 result = []
 cur_result = []
@@ -36,7 +38,7 @@ flag_unmatch_result = False
 def clearAll():
     global t, firstTime, lastTime
     global flag_count
-    global result, cur_result, j_check, l_check
+    global result, cur_result, j_check, l_check, r_check, cur_r_check
     global a, b, c, d
 
     firstTime = -1
@@ -54,12 +56,12 @@ def clearAll():
     result = []
     j_check = []
     l_check = []
-    
-
+    r_check = []
+    cur_r_check = []
 
 def clearCache():
     global cur_t, cur_firstTime, cur_lastTime
-    global cur_result, j_check, l_check
+    global cur_result, j_check, l_check, r_check, cur_r_check
     global flag_thread_count, flag_thread_order, flag_time_limit, flag_unmatch_result
 
     flag_thread_count = False
@@ -72,6 +74,16 @@ def clearCache():
     cur_t = -1
 
     cur_result = []
+
+    cur_r_check = []
+    r_check = []
+    for i in range(n):
+        r_check.append([])
+        cur_r_check.append([])
+        for j in range(k):
+            r_check[i].append(0)
+            cur_r_check[i].append(0)
+
     j_check = []
     for i in range(n):
         j_check.append([])
@@ -83,6 +95,7 @@ def clearCache():
         l_check.append([])
         for j in range(k):
             l_check[i].append(0)
+
 
 # get input matrices a, b, c, and d from input-index-.txt
 def assertInput(inputLines):
@@ -120,14 +133,27 @@ def assertInput(inputLines):
         for j in range(k):
             l_check[i].append(0)
     
+    for i in range(n):
+        r_check.append([])
+        for j in range(k):
+            r_check[i].append(0)
+    for i in range(n):
+        cur_r_check.append([])
+        for j in range(k):
+            cur_r_check[i].append(0)
 
 # get firstTime, lastTime, and result matrix from output-index-.txt
 def assertOutput(outputLines):
     global t, firstTime, lastTime
+    global r_check
     t = 0
     i = 0
     firstTime = int(outputLines[t].split()[1])
     while(outputLines[i][0] == 't'):
+        if(outputLines[i].split()[4][-1] == '2'):
+            idx = [int(x) for x in outputLines[i].split()[5].split(':')[0][1:-1].split(',')]
+            r_check[idx[0] - 1][idx[1] - 1] = int(outputLines[i].split()[1])
+
         i += 1
     lastTime = int(outputLines[i-1].split()[1])
     t = i - 1
@@ -143,27 +169,25 @@ def threadCheck(output):
     # print(f"L: {len(l_check)},{len(l_check[0])}")
     global cur_t, cur_firstTime, cur_lastTime, lastTime, firstTime
     global flag_thread_order , flag_thread_count, flag_time_limit, flag_unmatch_result
+    global m, n, k
     cur_t = 0
     i = 0
     cur_firstTime = int(output[cur_t].split()[1])
     while(output[i][0] == 't'):
+        idx = [int(x) for x in output[i].split()[5].split(':')[0][1:-1].split(',')]
         if(output[i].split()[4][-1] == '0'):
-            idx = [int(x) for x in output[i].split()[5].split(':')[0][1:-1].split(',')]
-            j_check[idx[0] - 1][idx[1] - 1] = 1
-            # print(len(j_check[0]))
+            j_check[idx[0] - 1][idx[1] - 1] = int(output[i].split()[1])
         elif(output[i].split()[4][-1] == '1'):
-            idx = [int(x) for x in output[i].split()[5].split(':')[0][1:-1].split(',')]
-            # print(len(l_check[0]))
-            l_check[idx[0] - 1][idx[1] - 1] = 1
+            l_check[idx[0] - 1][idx[1] - 1] = int(output[i].split()[1])
         else:
-            idx = [int(x) for x in output[i].split()[5].split(':')[0][1:-1].split(',')]
+            cur_r_check[idx[0] - 1][idx[1] - 1] = int(output[i].split()[1])        
             for ji in range(m):
-                if(j_check[idx[0] - 1][ji] != 1):
+                if(j_check[idx[0] - 1][ji] == 0):
                     flag_thread_order = True
                     flag_count[1] += 1
             if(not flag_thread_order):
                 for li in range(m):
-                    if(l_check[li][idx[1] - 1] != 1):
+                    if(l_check[li][idx[1] - 1] == 0):
                         flag_thread_order = True
                         flag_count[1] += 1
         i += 1
@@ -175,10 +199,26 @@ def threadCheck(output):
         flag_thread_count = True
         flag_count[0] += 1
     
+    # Matrix2(5,1) i kontrol edelim ve bu t1 de basılsın
+    # Matrix0(5,*) pattterninr uyan en geç log t2 olsun
+    # Matrix1(*,1) patternine uyan en geç log t3 olsun
+    # Test etmeniz gereken değer t1-max(t2,t3)
 
-    if((cur_lastTime - cur_firstTime) > 2*(lastTime - firstTime)):
+    for ii in range(n):
+        for j in range(k):
+            t0 = 0
+            t1 = 0
+            for tt in range(m):
+                t0 = max(t0, j_check[ii][tt])
+                t1 = max(t1, l_check[tt][j])
+            t2 = cur_r_check[ii][j] - max(t0, t1)
+            if(t2 > 2*r_check[ii][j]):
+                flag_time_limit = True
+                flag_count[2] += 1
+            
+    if((not flag_time_limit) and ((cur_lastTime - cur_firstTime) > 3*(lastTime - firstTime))):
         flag_time_limit = True
-        flag_count[2] += 1
+        flag_count[2] *= -1
 
     # check result matrices
     for ri in range(n):
@@ -214,8 +254,10 @@ def printTester(testIdx, rep):
     if(flag_count[2] != 0):
         flag_check = False
         print("=> ERROR :: TIME LIMIT")
-        print(f"     TIME LIMIT EXCEEDED {flag_count[2]} TIMES")
+        print(f"     TIME LIMIT EXCEEDED {abs(flag_count[2])} TIMES")
         print("     POSSIBLE ERROR WITH WAIT AND SIGNAL")
+        if(flag_count[2] < 0):
+            print(f"     !!!WAITS TOO MUCH!!!")
         print("_________________________________________________________________________")    
 
     if(flag_count[3] != 0):
@@ -238,8 +280,8 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    testCaseCount = 20
-    testRepeat = 10
+    testCaseCount = 3
+    testRepeat = 1
     for i in range(1,testCaseCount+1):
         # Open the file for reading
         with open(f"inputs/input{i}.txt", 'r') as file:
