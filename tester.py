@@ -288,7 +288,7 @@ if __name__ == '__main__':
             testRepeat = int(args[-1])
 
         elif(int(args[0]) > 0 and int(args[1]) > 0):
-            testCases = [x for x in range (1, int(args[0]))]
+            testCases = [x for x in range (1, int(args[0]) + 1)]
             testRepeat = int(args[1])     
     else:
         testCases = [x for x in range(1,6)]
