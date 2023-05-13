@@ -291,7 +291,7 @@ if __name__ == '__main__':
             testCases = [x for x in range (1, int(args[0]) + 1)]
             testRepeat = int(args[1])     
     else:
-        testCases = [x for x in range(1,6)]
+        testCases = [x for x in range(1,31)]
         testRepeat = 5
 
     for i in testCases:
