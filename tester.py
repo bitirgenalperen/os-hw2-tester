@@ -34,6 +34,7 @@ flag_thread_count = False
 flag_thread_order = False
 flag_time_limit = False
 flag_unmatch_result = False
+flag_overall_time = False
 
 
 def clearAll():
@@ -63,12 +64,13 @@ def clearAll():
 def clearCache():
     global cur_t, cur_firstTime, cur_lastTime
     global cur_result, j_check, l_check, r_check, cur_r_check
-    global flag_thread_count, flag_thread_order, flag_time_limit, flag_unmatch_result
+    global flag_thread_count, flag_thread_order, flag_time_limit, flag_unmatch_result, flag_overall_time
 
     flag_thread_count = False
     flag_thread_order = False
     flag_time_limit = False
     flag_unmatch_result = False
+    flag_overall_time = False
 
     cur_firstTime = -1
     cur_lastTime = -1
@@ -164,7 +166,7 @@ def assertOutput(outputLines):
 # check thread count :: thread order :: threadTime from user's output
 def threadCheck(output):
     global cur_t, cur_firstTime, cur_lastTime, lastTime, firstTime
-    global flag_thread_order , flag_thread_count, flag_time_limit, flag_unmatch_result
+    global flag_thread_order , flag_thread_count, flag_time_limit, flag_overall_time, flag_unmatch_result
     global m, n, k
     cur_t = 0
     i = 0
@@ -180,11 +182,13 @@ def threadCheck(output):
             for ji in range(m):
                 if(j_check[idx[0] - 1][ji] == 0):
                     flag_thread_order = True
+                    print(f"IDX: {idx}  ,   ji: {ji}")
                     flag_count[1] += 1
             if(not flag_thread_order):
                 for li in range(m):
                     if(l_check[li][idx[1] - 1] == 0):
                         flag_thread_order = True
+                        print(f"IDX: {idx}  ,   li: {li}")
                         flag_count[1] += 1
         i += 1
     
@@ -208,8 +212,7 @@ def threadCheck(output):
                 flag_count[2] += 1
             
     if((not flag_time_limit) and ((cur_lastTime - cur_firstTime) > 3*(lastTime - firstTime))):
-        flag_time_limit = True
-        flag_count[2] *= -1
+        flag_overall_time = True
 
     # check result matrices
     for ri in range(n):
@@ -247,7 +250,7 @@ def printTester(testIdx, rep):
         print("=> ERROR :: TIME LIMIT")
         print(f"     TIME LIMIT EXCEEDED {abs(flag_count[2])} TIMES")
         print("     POSSIBLE ERROR WITH WAIT AND SIGNAL")
-        if(flag_count[2] < 0):
+        if(flag_overall_time):
             print(f"     !!!WAITS TOO MUCH!!!")
         print("_________________________________________________________________________")    
 
@@ -271,8 +274,8 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    testCaseCount = 20
-    testRepeat = 5
+    testCaseCount = 25
+    testRepeat = 10
     if(len(sys.argv) > 1):
         args = sys.argv[1:]
         testCaseCount = int(args[0])
@@ -314,4 +317,4 @@ if __name__ == '__main__':
         clearAll()
     
     elem = testCaseCount * testRepeat
-    print(f"YOUR FINAL GRADE: {grade}/{elem}")
+    print(f"YOUR FINAL GRADE: {grade*100/elem}/100.00")
