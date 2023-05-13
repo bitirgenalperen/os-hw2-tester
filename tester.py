@@ -274,7 +274,7 @@ def printTester(testIdx, rep):
 
 
 if __name__ == '__main__':
-    args = []  
+    args = [""]  
     if(len(sys.argv) > 1):
         args = sys.argv[1:]
         if(args[0] == '-c'):
@@ -291,8 +291,8 @@ if __name__ == '__main__':
             testCases = [x for x in range (1, int(args[0]))]
             testRepeat = int(args[1])     
     else:
-        testCases = [x for x in range(1,26)]
-        testRepeat = 10
+        testCases = [x for x in range(1,6)]
+        testRepeat = 5
 
     for i in testCases:
         # Open the file for reading

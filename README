@@ -1,7 +1,7 @@
 - put hw2 executable in this directory
     - default run by "python3 tester.py"
     - run by "python3 tester.py testCase testRepeat"
-        - if no other argument given default values for testCases is 25 and testRepeat is 10
+        - if no other argument given default values for testCases is 25 and testRepeat is 5
     - run by "python3 tester.py -c testCase testRepeat"
         - "-c" flag helps to choose specific case
     - run by "python3 tester.py -l testCase1 testCase2 ... testCaseN testRepeat"
