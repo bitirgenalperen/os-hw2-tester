@@ -273,15 +273,27 @@ def printTester(testIdx, rep):
     print("=============================================================================")
 
 
-if __name__ == '__main__':
-    testCaseCount = 25
-    testRepeat = 10
+if __name__ == '__main__':   
     if(len(sys.argv) > 1):
         args = sys.argv[1:]
-        testCaseCount = int(args[0])
-        testRepeat = int(args[1])     
+        if(args[0] == '-c'):
+            testCases = [int(args[1])]
+            testRepeat = int(args[2])
 
-    for i in range(1,testCaseCount+1):
+        elif(args[0] == '-l'):
+            testCases = []
+            for i in range(len(args)-2):
+                testCases.append(int(args[i+1]))
+            testRepeat = int(args[-1])
+
+        elif(int(args[0]) > 0 and int(args[1]) > 0):
+            testCases = [x for x in range (1, int(args[0]))]
+            testRepeat = int(args[1])     
+    else:
+        testCases = [x for x in range(1,26)]
+        testRepeat = 10
+
+    for i in testCases:
         # Open the file for reading
         with open(f"inputs/input{i}.txt", 'r') as file:
             # Initialize an empty list to store the lines
@@ -316,5 +328,8 @@ if __name__ == '__main__':
         printTester(i, testRepeat)
         clearAll()
     
-    elem = testCaseCount * testRepeat
-    print(f"YOUR FINAL GRADE: {grade*100/elem}/100.00")
+    if(args[0] == '-c'):
+        elem = testRepeat
+    else:
+        elem = len(testCases) * testRepeat
+    print(f"YOUR FINAL GRADE: {round(grade*100/elem,2)}/100.00")
